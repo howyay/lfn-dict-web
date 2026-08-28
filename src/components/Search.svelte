@@ -13,19 +13,15 @@
 		Languages
 	} from "lucide-svelte";
 
-	type Sense = { pos: string; def: string; pron: string; ex: string; t?: [string, string] };
+	type Sense = { p: string; d: string; e: string; n: string; t?: [string, string] };
 	type Dict = Record<string, Sense[]>;
-	type Trans = [string, string, string][];
-	type Result = { w: string; src: "lfn" | "contains" | "en" | "zh" };
 
 	let dict: Dict = {};
-	let trans: Trans = [];
 	let nslfn: Record<string, string> = {};
 	let query = $state("");
-	let results = $state<Result[]>([]);
+	let results = $state<string[]>([]);
 	let selected = $state<string | null>(null);
 	let loading = $state(true);
-	let transLoaded = $state(false);
 
 	let emptyQuery = $state(true);
 	let noResults = $state(false);
@@ -45,13 +41,6 @@
 		x: "autre"
 	};
 
-	const SRC_LABEL: Record<string, string> = {
-		lfn: "LFN",
-		contains: "LFN~",
-		en: "EN",
-		zh: "中"
-	};
-
 	const norm = (s: string) =>
 		s
 			.toLowerCase()
@@ -66,17 +55,14 @@
 			const base = import.meta.env.BASE_URL.endsWith("/")
 				? import.meta.env.BASE_URL
 				: import.meta.env.BASE_URL + "/";
-			const [d, t, n] = await Promise.all([
+			const [d, n] = await Promise.all([
 				fetch(base + "data/lfndict.json").then((r) => r.json()),
-				fetch(base + "data/trans.json").then((r) => r.json()),
 				fetch(base + "data/nslfn.json").then((r) => r.json())
 			]);
 			dict = d;
-			trans = t;
 			nslfn = n;
 		} finally {
 			loading = false;
-			transLoaded = true;
 		}
 	});
 
@@ -90,32 +76,12 @@
 			return;
 		}
 		const keys = Object.keys(dict);
-		const starts: Result[] = keys
-			.filter((k) => norm(k).startsWith(q))
-			.slice(0, 10)
-			.map((w) => ({ w, src: "lfn" as const }));
-		const contains: Result[] = keys
-			.filter((k) => !starts.some((s) => s.w === k) && norm(k).includes(q))
-			.slice(0, 5)
-			.map((w) => ({ w, src: "contains" as const }));
-		const viaTrans: Result[] = [];
-		if (transLoaded) {
-			const seen = new Set([...starts, ...contains].map((r) => r.w));
-			for (const [w, e, z] of trans) {
-				if (seen.has(w)) continue;
-				if (e && norm(e).includes(q)) {
-					seen.add(w);
-					viaTrans.push({ w, src: "en" as const });
-				} else if (z && norm(z).includes(q)) {
-					seen.add(w);
-					viaTrans.push({ w, src: "zh" as const });
-				}
-				if (viaTrans.length >= 15) break;
-			}
-		}
-		const all = [...starts, ...contains, ...viaTrans].slice(0, 30);
-		results = all;
-		noResults = all.length === 0;
+		const starts = keys.filter((k) => norm(k).startsWith(q)).slice(0, 20);
+		const contains = keys
+			.filter((k) => !starts.includes(k) && norm(k).includes(q))
+			.slice(0, 10);
+		results = [...starts, ...contains].slice(0, 30);
+		noResults = results.length === 0;
 	}
 
 	function select(w: string) {
@@ -124,7 +90,7 @@
 
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key === "Enter" && results.length > 0) {
-			selected = results[0].w;
+			selected = results[0];
 		}
 	}
 </script>
@@ -162,7 +128,7 @@
 		<div class="py-16 text-center">
 			<p class="text-sm text-muted-foreground">Tipe un parola per xerca.</p>
 			<p class="mt-1 text-xs text-muted-foreground/70">
-				输入 LFN、英文或中文搜索（忽略重音）· 结果带 [LFN]/[EN]/[中] 标识
+				按 LFN 拉丁拼写搜索（忽略重音）· 词条附 NSLFN 女书字形
 			</p>
 		</div>
 	{:else if noResults}
@@ -173,28 +139,19 @@
 		<div class="flex flex-col gap-4 lg:flex-row">
 			<div class="h-72 w-full overflow-y-auto rounded-md border lg:h-[520px] lg:w-80 lg:shrink-0">
 				<ul class="p-1">
-					{#each results as it (it.w)}
+					{#each results as w (w)}
 						<li>
 							<button
 								type="button"
-								onclick={() => select(it.w)}
-								class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent {selected === it.w ? 'bg-accent' : ''}"
+								onclick={() => select(w)}
+								class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent {selected === w ? 'bg-accent' : ''}"
 							>
-								<span class="flex min-w-0 flex-col">
-									<span class="truncate font-medium">
-										{it.w}
-										<span class="ml-1 text-[10px] text-muted-foreground">[{SRC_LABEL[it.src]}]</span>
-									</span>
-									<span class="truncate text-xs text-muted-foreground">
-										{#if it.src === "lfn" && dict[it.w]?.[0]?.pos}
-											{POS_LABEL[dict[it.w][0].pos] ?? dict[it.w][0].pos}
-										{:else if dict[it.w]?.[0]?.t?.[0]}
-											{dict[it.w][0].t[0]}
-										{/if}
-									</span>
+								<span class="truncate font-medium">{w}</span>
+								<span class="truncate text-xs text-muted-foreground">
+									{dict[w]?.[0]?.p ? POS_LABEL[dict[w][0].p] ?? dict[w][0].p : ""}
 								</span>
-								{#if nslfn[it.w]}
-									<span class="nushu shrink-0 text-lg leading-none">{nslfn[it.w]}</span>
+								{#if nslfn[w]}
+									<span class="nushu shrink-0 text-lg leading-none">{nslfn[w]}</span>
 								{/if}
 							</button>
 						</li>
@@ -212,12 +169,12 @@
 								{/if}
 								<CardTitle class="text-2xl">{selected}</CardTitle>
 								{#each dict[selected] as s, i (i)}
-									{#if s.pos}
-										<Badge variant="outline">{POS_LABEL[s.pos] ?? s.pos}</Badge>
+									{#if s.p}
+										<Badge variant="outline">{POS_LABEL[s.p] ?? s.p}</Badge>
 									{/if}
 								{/each}
 							</div>
-							{#if dict[selected][0]?.pron}
+							{#if dict[selected][0]?.n}
 								<CardDescription>Pronunsia: {dict[selected][0].pron}</CardDescription>
 							{/if}
 						</CardHeader>
@@ -248,17 +205,17 @@
 							{/if}
 							{#each dict[selected] as s, i (i)}
 								<div class="space-y-1.5">
-									{#if s.pos}
+									{#if s.p}
 										<p class="text-xs font-medium text-muted-foreground uppercase">
-											{POS_LABEL[s.pos] ?? s.pos}
-											{#if s.pron}· /{s.pron}/{/if}
+											{POS_LABEL[s.p] ?? s.p}
+											{#if s.n}· /{s.n}/{/if}
 										</p>
 									{/if}
-									{#if s.def}
-										<p class="text-sm leading-relaxed">{s.def}</p>
+									{#if s.d}
+										<p class="text-sm leading-relaxed">{s.d}</p>
 									{/if}
-									{#if s.ex}
-										<p class="text-sm italic text-muted-foreground">{s.ex}</p>
+									{#if s.e}
+										<p class="text-sm italic text-muted-foreground">{s.e}</p>
 									{/if}
 								</div>
 							{/each}
