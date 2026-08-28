@@ -16,17 +16,17 @@
 	type Sense = { pos: string; def: string; pron: string; ex: string; t?: [string, string] };
 	type Dict = Record<string, Sense[]>;
 	type Trans = [string, string, string][];
+	type Result = { w: string; src: "lfn" | "contains" | "en" | "zh" };
 
 	let dict: Dict = {};
 	let trans: Trans = [];
+	let nslfn: Record<string, string> = {};
 	let query = $state("");
-	let results = $state<string[]>([]);
+	let results = $state<Result[]>([]);
 	let selected = $state<string | null>(null);
 	let loading = $state(true);
 	let transLoaded = $state(false);
 
-	// 注意：if/else 链不能直接读 query（Svelte 5 bug：bind:value 绑定会被条件分支读取破坏），
-	// 所以用 $derived 派生判断。
 	let emptyQuery = $state(true);
 	let noResults = $state(false);
 
@@ -45,6 +45,13 @@
 		x: "autre"
 	};
 
+	const SRC_LABEL: Record<string, string> = {
+		lfn: "LFN",
+		contains: "LFN~",
+		en: "EN",
+		zh: "中"
+	};
+
 	const norm = (s: string) =>
 		s
 			.toLowerCase()
@@ -59,12 +66,14 @@
 			const base = import.meta.env.BASE_URL.endsWith("/")
 				? import.meta.env.BASE_URL
 				: import.meta.env.BASE_URL + "/";
-			const [d, t] = await Promise.all([
+			const [d, t, n] = await Promise.all([
 				fetch(base + "data/lfndict.json").then((r) => r.json()),
-				fetch(base + "data/trans.json").then((r) => r.json())
+				fetch(base + "data/trans.json").then((r) => r.json()),
+				fetch(base + "data/nslfn.json").then((r) => r.json())
 			]);
 			dict = d;
 			trans = t;
+			nslfn = n;
 		} finally {
 			loading = false;
 			transLoaded = true;
@@ -81,24 +90,32 @@
 			return;
 		}
 		const keys = Object.keys(dict);
-		const starts = keys.filter((k) => norm(k).startsWith(q)).slice(0, 20);
-		const contains = keys
-			.filter((k) => !starts.includes(k) && norm(k).includes(q))
-			.slice(0, 10);
-		let viaTrans: string[] = [];
+		const starts: Result[] = keys
+			.filter((k) => norm(k).startsWith(q))
+			.slice(0, 10)
+			.map((w) => ({ w, src: "lfn" as const }));
+		const contains: Result[] = keys
+			.filter((k) => !starts.some((s) => s.w === k) && norm(k).includes(q))
+			.slice(0, 5)
+			.map((w) => ({ w, src: "contains" as const }));
+		const viaTrans: Result[] = [];
 		if (transLoaded) {
-			const seen = new Set([...starts, ...contains]);
+			const seen = new Set([...starts, ...contains].map((r) => r.w));
 			for (const [w, e, z] of trans) {
 				if (seen.has(w)) continue;
-				if ((e && norm(e).includes(q)) || (z && norm(z).includes(q))) {
+				if (e && norm(e).includes(q)) {
 					seen.add(w);
-					viaTrans.push(w);
-					if (viaTrans.length >= 15) break;
+					viaTrans.push({ w, src: "en" as const });
+				} else if (z && norm(z).includes(q)) {
+					seen.add(w);
+					viaTrans.push({ w, src: "zh" as const });
 				}
+				if (viaTrans.length >= 15) break;
 			}
 		}
-		results = [...starts.slice(0, 10), ...contains.slice(0, 5), ...viaTrans.slice(0, 15)].slice(0, 30);
-		noResults = results.length === 0;
+		const all = [...starts, ...contains, ...viaTrans].slice(0, 30);
+		results = all;
+		noResults = all.length === 0;
 	}
 
 	function select(w: string) {
@@ -107,7 +124,7 @@
 
 	function onKeydown(e: KeyboardEvent) {
 		if (e.key === "Enter" && results.length > 0) {
-			selected = results[0];
+			selected = results[0].w;
 		}
 	}
 </script>
@@ -118,7 +135,7 @@
 			Disionario <span class="text-muted-foreground">de Elefen</span>
 		</h1>
 		<p class="mt-2 text-sm text-muted-foreground">
-			LFN → LFN · EN · 中文 — 29,309 词条
+			LFN → LFN · EN · 中文 · <span class="nushu">𛅰</span> NSLFN — 29,309 词条
 		</p>
 	</header>
 
@@ -145,7 +162,7 @@
 		<div class="py-16 text-center">
 			<p class="text-sm text-muted-foreground">Tipe un parola per xerca.</p>
 			<p class="mt-1 text-xs text-muted-foreground/70">
-				输入 LFN、英文或中文搜索（忽略重音）
+				输入 LFN、英文或中文搜索（忽略重音）· 结果带 [LFN]/[EN]/[中] 标识
 			</p>
 		</div>
 	{:else if noResults}
@@ -156,21 +173,29 @@
 		<div class="flex flex-col gap-4 lg:flex-row">
 			<div class="h-72 w-full overflow-y-auto rounded-md border lg:h-[520px] lg:w-80 lg:shrink-0">
 				<ul class="p-1">
-					{#each results as w (w)}
+					{#each results as it (it.w)}
 						<li>
 							<button
 								type="button"
-								onclick={() => select(w)}
-								class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent {selected === w ? 'bg-accent' : ''}"
+								onclick={() => select(it.w)}
+								class="flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-accent {selected === it.w ? 'bg-accent' : ''}"
 							>
-								<span class="shrink-0 font-medium">{w}</span>
-								<span class="truncate text-xs text-muted-foreground">
-									{#if dict[w]?.[0]?.t?.[0]}
-										{dict[w][0].t[0]}
-									{:else if dict[w]?.[0]?.pos}
-										{POS_LABEL[dict[w][0].pos] ?? dict[w][0].p}
-									{/if}
+								<span class="flex min-w-0 flex-col">
+									<span class="truncate font-medium">
+										{it.w}
+										<span class="ml-1 text-[10px] text-muted-foreground">[{SRC_LABEL[it.src]}]</span>
+									</span>
+									<span class="truncate text-xs text-muted-foreground">
+										{#if it.src === "lfn" && dict[it.w]?.[0]?.pos}
+											{POS_LABEL[dict[it.w][0].pos] ?? dict[it.w][0].pos}
+										{:else if dict[it.w]?.[0]?.t?.[0]}
+											{dict[it.w][0].t[0]}
+										{/if}
+									</span>
 								</span>
+								{#if nslfn[it.w]}
+									<span class="nushu shrink-0 text-lg leading-none">{nslfn[it.w]}</span>
+								{/if}
 							</button>
 						</li>
 					{/each}
@@ -181,7 +206,10 @@
 				{#if selected && dict[selected]}
 					<Card>
 						<CardHeader>
-							<div class="flex flex-wrap items-center gap-2">
+							<div class="flex flex-wrap items-center gap-3">
+								{#if nslfn[selected]}
+									<span class="nushu text-3xl leading-none">{nslfn[selected]}</span>
+								{/if}
 								<CardTitle class="text-2xl">{selected}</CardTitle>
 								{#each dict[selected] as s, i (i)}
 									{#if s.pos}
@@ -208,11 +236,15 @@
 										{/if}
 										{#if s.t?.[1] && s.t[1] !== s.t[0]}
 											<p class="text-sm">
-												<span class="font-semibold text-muted-foreground">中:</span> {s.t[1]}
+												<span class="font-semibold text-muted-foreground">中文:</span> {s.t[1]}
 											</p>
 										{/if}
 									{/each}
 								</div>
+							{:else}
+								<p class="text-xs text-muted-foreground">
+									（该词暂无官方 EN/中文翻译）
+								</p>
 							{/if}
 							{#each dict[selected] as s, i (i)}
 								<div class="space-y-1.5">
@@ -245,6 +277,6 @@
 	{/if}
 
 	<footer class="mt-auto pt-8 text-center text-xs text-muted-foreground">
-		数据来自 elefen.org 官方词典（LFN 释义 + EN/中文翻译）· NSLFN 项目 · Astro + Svelte + shadcn-svelte
+		数据来自 elefen.org 官方词典 · NSLFN 女书映射 · Astro + Svelte
 	</footer>
 </div>

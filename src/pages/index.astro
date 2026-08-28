@@ -1,8 +1,5 @@
 ---
 import Search from "../components/Search.svelte";
-
-
-
 import "../styles/global.css";
 ---
 
@@ -14,14 +11,22 @@ import "../styles/global.css";
 		<title>Disionario de Elefen · LFN 词典</title>
 		<meta
 			name="description"
-			content="Lingua Franca Nova (Elefen) 词典 — 29,309 词条，数据来自 elefen.org 官方词典"
+			content="Lingua Franca Nova (Elefen) 词典 — 29,309 词条，含 LFN/EN/中文与 NSLFN 女书字形"
 		/>
 		<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>𛅰</text></svg>" />
+		<style is:inline>
+			@font-face {
+				font-family: "Noto Sans Nushu";
+				src: url("fonts/NotoSansNushu-Regular.ttf") format("truetype");
+				font-display: swap;
+			}
+			.nushu {
+				font-family: "Noto Sans Nushu", serif;
+			}
+		</style>
 	</head>
 	<body class="bg-background text-foreground antialiased">
 		<main>
-			
-
 			<Search client:load />
 		</main>
 	</body>
