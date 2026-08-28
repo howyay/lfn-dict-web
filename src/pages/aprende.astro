@@ -1,0 +1,213 @@
+---
+import mapping from "../data/mapping_data.json";
+import "../styles/global.css";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href={base + "favicon.svg"} type="image/svg+xml" />
+		<title>NSLFN 映射指南 · Latin LFN → 女书</title>
+		<style is:inline>
+			@font-face {
+				font-family: "Noto Sans Nushu";
+				src: url("../fonts/NotoSansNushu-Regular.ttf") format("truetype");
+				font-display: swap;
+			}
+			.nushu {
+				font-family: "Noto Sans Nushu", serif;
+			}
+			table.mapping {
+				border-collapse: collapse;
+				width: 100%;
+			}
+			table.mapping th,
+			table.mapping td {
+				border: 1px solid oklch(0.922 0 0);
+				padding: 6px 10px;
+				text-align: center;
+			}
+			table.mapping th {
+				background: oklch(0.97 0 0);
+				font-size: 12px;
+				color: oklch(0.556 0 0);
+			}
+			table.mapping td .syl {
+				display: block;
+				font-size: 12px;
+				color: oklch(0.556 0 0);
+			}
+			.step-glyph {
+				display: inline-block;
+				margin: 0 4px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body class="bg-background text-foreground antialiased">
+		<div class="mx-auto w-full max-w-4xl px-4 py-10">
+			<header class="mb-10 text-center">
+				<p class="text-sm text-muted-foreground">
+					<a href={base} class="hover:underline">← 返回词典</a>
+				</p>
+				<h1 class="mt-2 text-3xl font-bold tracking-tight">NSLFN 映射指南</h1>
+				<p class="mt-2 text-sm text-muted-foreground">
+					如何把拉丁拼写的 LFN（Elefen）转写成女书脚本 — 双层系统：词表词 + 保音转写
+				</p>
+			</header>
+
+			<!-- 1. 总览 -->
+			<section class="mb-10">
+				<h2 class="mb-3 text-xl font-semibold">1 · 系统总览</h2>
+				<p class="mb-3 text-sm leading-relaxed">
+					NSLFN 使用 <strong>396 个女书字符</strong>，分两层：
+				</p>
+				<ul class="mb-3 list-disc pl-5 text-sm leading-relaxed">
+					<li>
+						<strong>词表层（{mapping.glyph_count.word_chars} 个字符）</strong>：最高频的 LFN 词
+						每个直接对应一个女书字符——<span class="nushu text-lg">{mapping.word_chars[0].glyph}</span> 就是
+						<code>la</code>（定冠词）。
+					</li>
+					<li>
+						<strong>音节层（{mapping.glyph_count.syllable_chars} 个字符）</strong>：LFN 的音节
+						（CV、CVn、CVs、V、Vn、Vs）每个对应一个字符。词表外的词按发音拆成音节，逐音节写。
+					</li>
+				</ul>
+				<p class="text-sm leading-relaxed">
+					规则：<strong>有词表字符就用词表字符（1 词 = 1 字）</strong>；否则
+					<strong>按 LFN 音系把词拆成合法音节</strong>，每个音节写它的字符。
+					女书是纯音节文字，拼写就是读音。
+				</p>
+			</section>
+
+			<!-- 2. CV 网格 -->
+			<section class="mb-10">
+				<h2 class="mb-3 text-xl font-semibold">2 · 声母 × 元音网格（核心表）</h2>
+				<p class="mb-3 text-sm text-muted-foreground">
+					LFN 有 16 个单声母 × 5 个元音 = 80 个 CV 音节，每个都有独立字符（像日文五十音图）。
+					记住这张表就记住了大部分映射。
+				</p>
+				<div class="overflow-x-auto rounded-lg border p-3">
+					<table class="mapping">
+						<thead>
+							<tr>
+								<th>声母</th>
+								{mapping.vowels.map(v => (
+									<th>{v}</th>
+								))}
+							</tr>
+						</thead>
+						<tbody>
+							{mapping.cv_grid.map(row => (
+								<tr>
+									<td><strong>{row.onset}</strong></td>
+									{row.row.map(cell => (
+										<td>
+											<span class="nushu text-xl leading-none">{cell.glyph}</span>
+											<span class="syl">{cell.syllable}</span>
+										</td>
+									))}
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- 3. 韵尾 -->
+			<section class="mb-10">
+				<h2 class="mb-3 text-xl font-semibold">3 · 韵尾：n 与 s</h2>
+				<p class="mb-3 text-sm leading-relaxed">
+					LFN 音节最多一个韵尾，只允许 <code>n</code> 或 <code>s</code>。
+					带韵尾的音节（如 <code>ban</code>、<code>bas</code>）也是独立字符：
+				</p>
+				<div class="flex flex-wrap gap-3">
+					{mapping.cvn_examples.map(c => (
+						<div class="rounded-md border p-2 text-center">
+							<span class="nushu block text-xl leading-none">{c.glyph}</span>
+							<span class="text-xs text-muted-foreground">{c.syllable}</span>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<!-- 4. 转写规则 -->
+			<section class="mb-10">
+				<h2 class="mb-3 text-xl font-semibold">4 · 词表外单词的转写规则</h2>
+				<ul class="space-y-2 text-sm leading-relaxed">
+					<li class="rounded-md border p-3">
+						<strong>复辅音拆开：</strong>LFN 音节声母只能有一个辅音，所以
+						<code>bl</code>、<code>tr</code> 等拆开并插入元音——
+						<code>blanca</code> → <code>ba·lan·ca</code>。
+					</li>
+					<li class="rounded-md border p-3">
+						<strong>不允许的韵尾补元音：</strong>韵尾只允许 n/s，所以
+						<code>pex</code>（x 结尾）→ <code>pe·xa</code>。
+					</li>
+					<li class="rounded-md border p-3">
+						<strong>双元音拆分：</strong>相邻元音拆成两个音节——
+						<code>auto</code> → <code>a·u·to</code>。
+					</li>
+					<li class="rounded-md border p-3">
+						<strong>外来字母映射：</strong><code>k→c</code>、<code>q→c</code>、
+						<code>w→v</code>、<code>y→i</code>、<code>h→x</code>（LFN 22 字母外的不常用字母）。
+					</li>
+					<li class="rounded-md border p-3">
+						<strong>可读性：</strong>转写尽量保留原字母顺序，只插入最少元音——
+						写出来念一遍就是原词。
+					</li>
+				</ul>
+			</section>
+
+			<!-- 5. 词表词 -->
+			<section class="mb-10">
+				<h2 class="mb-3 text-xl font-semibold">5 · 高频词 = 一个字符</h2>
+				<p class="mb-3 text-sm text-muted-foreground">
+					这些词不用拆音节，直接一个女书字符（示例）：
+				</p>
+				<div class="flex flex-wrap gap-3">
+					{mapping.word_chars.map(w => (
+						<div class="rounded-md border p-2 text-center">
+							<span class="nushu block text-xl leading-none">{w.glyph}</span>
+							<span class="text-xs text-muted-foreground">{w.word}</span>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<!-- 6. 完整示例 -->
+			<section>
+				<h2 class="mb-3 text-xl font-semibold">6 · 完整示例</h2>
+				<div class="space-y-4">
+					{mapping.examples.map(ex => (
+						<div class="rounded-lg border p-4">
+							<div class="mb-2 flex items-center gap-2">
+								<code class="text-lg font-semibold">{ex.word}</code>
+								<span class="text-xs text-muted-foreground">→</span>
+								<span class="text-sm text-muted-foreground">
+									{ex.syllables.join("·")}
+								</span>
+							</div>
+							<div class="flex items-center">
+								{ex.per.map(step => (
+									<div class="step-glyph">
+										<span class="nushu block text-2xl leading-none">{step.glyph}</span>
+										<span class="text-xs text-muted-foreground">{step.syllable}</span>
+									</div>
+								))}
+							</div>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<footer class="mt-10 border-t pt-4 text-center text-xs text-muted-foreground">
+				NSLFN 项目 · 女书字形来自 Noto Sans Nushu · 映射基于 LFN 音系规则
+			</footer>
+		</div>
+	</body>
+</html>

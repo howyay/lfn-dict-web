@@ -1,0 +1,983 @@
+{
+ "onsets": [
+  "b",
+  "c",
+  "d",
+  "f",
+  "g",
+  "j",
+  "l",
+  "m",
+  "n",
+  "p",
+  "r",
+  "s",
+  "t",
+  "v",
+  "x",
+  "z"
+ ],
+ "vowels": [
+  "a",
+  "e",
+  "i",
+  "o",
+  "u"
+ ],
+ "codas": [
+  "n",
+  "s"
+ ],
+ "cv_grid": [
+  {
+   "onset": "b",
+   "row": [
+    {
+     "syllable": "ba",
+     "glyph": "𛇜",
+     "cp": "U+1B1DC"
+    },
+    {
+     "syllable": "be",
+     "glyph": "𛉽",
+     "cp": "U+1B27D"
+    },
+    {
+     "syllable": "bi",
+     "glyph": "𛈽",
+     "cp": "U+1B23D"
+    },
+    {
+     "syllable": "bo",
+     "glyph": "𛈢",
+     "cp": "U+1B222"
+    },
+    {
+     "syllable": "bu",
+     "glyph": "𛉸",
+     "cp": "U+1B278"
+    }
+   ]
+  },
+  {
+   "onset": "c",
+   "row": [
+    {
+     "syllable": "ca",
+     "glyph": "𛈊",
+     "cp": "U+1B20A"
+    },
+    {
+     "syllable": "ce",
+     "glyph": "𛈿",
+     "cp": "U+1B23F"
+    },
+    {
+     "syllable": "ci",
+     "glyph": "𛈨",
+     "cp": "U+1B228"
+    },
+    {
+     "syllable": "co",
+     "glyph": "𛈲",
+     "cp": "U+1B232"
+    },
+    {
+     "syllable": "cu",
+     "glyph": "𛈙",
+     "cp": "U+1B219"
+    }
+   ]
+  },
+  {
+   "onset": "d",
+   "row": [
+    {
+     "syllable": "da",
+     "glyph": "𛇛",
+     "cp": "U+1B1DB"
+    },
+    {
+     "syllable": "de",
+     "glyph": "𛈞",
+     "cp": "U+1B21E"
+    },
+    {
+     "syllable": "di",
+     "glyph": "𛉀",
+     "cp": "U+1B240"
+    },
+    {
+     "syllable": "do",
+     "glyph": "𛈗",
+     "cp": "U+1B217"
+    },
+    {
+     "syllable": "du",
+     "glyph": "𛈰",
+     "cp": "U+1B230"
+    }
+   ]
+  },
+  {
+   "onset": "f",
+   "row": [
+    {
+     "syllable": "fa",
+     "glyph": "𛇘",
+     "cp": "U+1B1D8"
+    },
+    {
+     "syllable": "fe",
+     "glyph": "𛈺",
+     "cp": "U+1B23A"
+    },
+    {
+     "syllable": "fi",
+     "glyph": "𛉃",
+     "cp": "U+1B243"
+    },
+    {
+     "syllable": "fo",
+     "glyph": "𛈧",
+     "cp": "U+1B227"
+    },
+    {
+     "syllable": "fu",
+     "glyph": "𛉑",
+     "cp": "U+1B251"
+    }
+   ]
+  },
+  {
+   "onset": "g",
+   "row": [
+    {
+     "syllable": "ga",
+     "glyph": "𛈚",
+     "cp": "U+1B21A"
+    },
+    {
+     "syllable": "ge",
+     "glyph": "𛉹",
+     "cp": "U+1B279"
+    },
+    {
+     "syllable": "gi",
+     "glyph": "𛉠",
+     "cp": "U+1B260"
+    },
+    {
+     "syllable": "go",
+     "glyph": "𛉻",
+     "cp": "U+1B27B"
+    },
+    {
+     "syllable": "gu",
+     "glyph": "𛉰",
+     "cp": "U+1B270"
+    }
+   ]
+  },
+  {
+   "onset": "j",
+   "row": [
+    {
+     "syllable": "ja",
+     "glyph": "𛉭",
+     "cp": "U+1B26D"
+    },
+    {
+     "syllable": "je",
+     "glyph": "𛈷",
+     "cp": "U+1B237"
+    },
+    {
+     "syllable": "ji",
+     "glyph": "𛈥",
+     "cp": "U+1B225"
+    },
+    {
+     "syllable": "jo",
+     "glyph": "𛉡",
+     "cp": "U+1B261"
+    },
+    {
+     "syllable": "ju",
+     "glyph": "𛉘",
+     "cp": "U+1B258"
+    }
+   ]
+  },
+  {
+   "onset": "l",
+   "row": [
+    {
+     "syllable": "la",
+     "glyph": "𛇭",
+     "cp": "U+1B1ED"
+    },
+    {
+     "syllable": "le",
+     "glyph": "𛇖",
+     "cp": "U+1B1D6"
+    },
+    {
+     "syllable": "li",
+     "glyph": "𛇕",
+     "cp": "U+1B1D5"
+    },
+    {
+     "syllable": "lo",
+     "glyph": "𛈶",
+     "cp": "U+1B236"
+    },
+    {
+     "syllable": "lu",
+     "glyph": "𛈮",
+     "cp": "U+1B22E"
+    }
+   ]
+  },
+  {
+   "onset": "m",
+   "row": [
+    {
+     "syllable": "ma",
+     "glyph": "𛈌",
+     "cp": "U+1B20C"
+    },
+    {
+     "syllable": "me",
+     "glyph": "𛈠",
+     "cp": "U+1B220"
+    },
+    {
+     "syllable": "mi",
+     "glyph": "𛈳",
+     "cp": "U+1B233"
+    },
+    {
+     "syllable": "mo",
+     "glyph": "𛈜",
+     "cp": "U+1B21C"
+    },
+    {
+     "syllable": "mu",
+     "glyph": "𛉆",
+     "cp": "U+1B246"
+    }
+   ]
+  },
+  {
+   "onset": "n",
+   "row": [
+    {
+     "syllable": "na",
+     "glyph": "𛈭",
+     "cp": "U+1B22D"
+    },
+    {
+     "syllable": "ne",
+     "glyph": "𛈹",
+     "cp": "U+1B239"
+    },
+    {
+     "syllable": "ni",
+     "glyph": "𛈩",
+     "cp": "U+1B229"
+    },
+    {
+     "syllable": "no",
+     "glyph": "𛈘",
+     "cp": "U+1B218"
+    },
+    {
+     "syllable": "nu",
+     "glyph": "𛉄",
+     "cp": "U+1B244"
+    }
+   ]
+  },
+  {
+   "onset": "p",
+   "row": [
+    {
+     "syllable": "pa",
+     "glyph": "𛊂",
+     "cp": "U+1B282"
+    },
+    {
+     "syllable": "pe",
+     "glyph": "𛈱",
+     "cp": "U+1B231"
+    },
+    {
+     "syllable": "pi",
+     "glyph": "𛈟",
+     "cp": "U+1B21F"
+    },
+    {
+     "syllable": "po",
+     "glyph": "𛈦",
+     "cp": "U+1B226"
+    },
+    {
+     "syllable": "pu",
+     "glyph": "𛉣",
+     "cp": "U+1B263"
+    }
+   ]
+  },
+  {
+   "onset": "r",
+   "row": [
+    {
+     "syllable": "ra",
+     "glyph": "𛇮",
+     "cp": "U+1B1EE"
+    },
+    {
+     "syllable": "re",
+     "glyph": "𛉾",
+     "cp": "U+1B27E"
+    },
+    {
+     "syllable": "ri",
+     "glyph": "𛉿",
+     "cp": "U+1B27F"
+    },
+    {
+     "syllable": "ro",
+     "glyph": "𛇗",
+     "cp": "U+1B1D7"
+    },
+    {
+     "syllable": "ru",
+     "glyph": "𛈡",
+     "cp": "U+1B221"
+    }
+   ]
+  },
+  {
+   "onset": "s",
+   "row": [
+    {
+     "syllable": "sa",
+     "glyph": "𛊀",
+     "cp": "U+1B280"
+    },
+    {
+     "syllable": "se",
+     "glyph": "𛇙",
+     "cp": "U+1B1D9"
+    },
+    {
+     "syllable": "si",
+     "glyph": "𛊃",
+     "cp": "U+1B283"
+    },
+    {
+     "syllable": "so",
+     "glyph": "𛈫",
+     "cp": "U+1B22B"
+    },
+    {
+     "syllable": "su",
+     "glyph": "𛈤",
+     "cp": "U+1B224"
+    }
+   ]
+  },
+  {
+   "onset": "t",
+   "row": [
+    {
+     "syllable": "ta",
+     "glyph": "𛇵",
+     "cp": "U+1B1F5"
+    },
+    {
+     "syllable": "te",
+     "glyph": "𛈁",
+     "cp": "U+1B201"
+    },
+    {
+     "syllable": "ti",
+     "glyph": "𛇝",
+     "cp": "U+1B1DD"
+    },
+    {
+     "syllable": "to",
+     "glyph": "𛇚",
+     "cp": "U+1B1DA"
+    },
+    {
+     "syllable": "tu",
+     "glyph": "𛈖",
+     "cp": "U+1B216"
+    }
+   ]
+  },
+  {
+   "onset": "v",
+   "row": [
+    {
+     "syllable": "va",
+     "glyph": "𛈪",
+     "cp": "U+1B22A"
+    },
+    {
+     "syllable": "ve",
+     "glyph": "𛈴",
+     "cp": "U+1B234"
+    },
+    {
+     "syllable": "vi",
+     "glyph": "𛈬",
+     "cp": "U+1B22C"
+    },
+    {
+     "syllable": "vo",
+     "glyph": "𛈛",
+     "cp": "U+1B21B"
+    },
+    {
+     "syllable": "vu",
+     "glyph": "𛋠",
+     "cp": "U+1B2E0"
+    }
+   ]
+  },
+  {
+   "onset": "x",
+   "row": [
+    {
+     "syllable": "xa",
+     "glyph": "𛈯",
+     "cp": "U+1B22F"
+    },
+    {
+     "syllable": "xe",
+     "glyph": "𛉛",
+     "cp": "U+1B25B"
+    },
+    {
+     "syllable": "xi",
+     "glyph": "𛉴",
+     "cp": "U+1B274"
+    },
+    {
+     "syllable": "xo",
+     "glyph": "𛉶",
+     "cp": "U+1B276"
+    },
+    {
+     "syllable": "xu",
+     "glyph": "𛊚",
+     "cp": "U+1B29A"
+    }
+   ]
+  },
+  {
+   "onset": "z",
+   "row": [
+    {
+     "syllable": "za",
+     "glyph": "𛉪",
+     "cp": "U+1B26A"
+    },
+    {
+     "syllable": "ze",
+     "glyph": "𛊐",
+     "cp": "U+1B290"
+    },
+    {
+     "syllable": "zi",
+     "glyph": "𛊝",
+     "cp": "U+1B29D"
+    },
+    {
+     "syllable": "zo",
+     "glyph": "𛉐",
+     "cp": "U+1B250"
+    },
+    {
+     "syllable": "zu",
+     "glyph": "𛊜",
+     "cp": "U+1B29C"
+    }
+   ]
+  }
+ ],
+ "coda_examples": [
+  {
+   "syllable": "an",
+   "glyph": "𛈻"
+  },
+  {
+   "syllable": "as",
+   "glyph": "𛉍"
+  },
+  {
+   "syllable": "en",
+   "glyph": "𛈸"
+  },
+  {
+   "syllable": "es",
+   "glyph": "𛉼"
+  },
+  {
+   "syllable": "in",
+   "glyph": "𛈝"
+  },
+  {
+   "syllable": "is",
+   "glyph": "𛉖"
+  },
+  {
+   "syllable": "on",
+   "glyph": "𛉋"
+  },
+  {
+   "syllable": "os",
+   "glyph": "𛉵"
+  },
+  {
+   "syllable": "un",
+   "glyph": "𛋢"
+  },
+  {
+   "syllable": "us",
+   "glyph": "𛋤"
+  }
+ ],
+ "cvn_examples": [
+  {
+   "syllable": "ban",
+   "glyph": "𛉙"
+  },
+  {
+   "syllable": "bas",
+   "glyph": "𛋐"
+  },
+  {
+   "syllable": "ben",
+   "glyph": "𛋯"
+  },
+  {
+   "syllable": "bes",
+   "glyph": "𛋒"
+  },
+  {
+   "syllable": "bin",
+   "glyph": "𛋗"
+  },
+  {
+   "syllable": "bis",
+   "glyph": "𛊷"
+  },
+  {
+   "syllable": "bon",
+   "glyph": "𛊛"
+  },
+  {
+   "syllable": "bos",
+   "glyph": "𛋑"
+  },
+  {
+   "syllable": "bun",
+   "glyph": "𛋷"
+  },
+  {
+   "syllable": "bus",
+   "glyph": "𛋚"
+  },
+  {
+   "syllable": "gan",
+   "glyph": "𛊓"
+  },
+  {
+   "syllable": "gas",
+   "glyph": "𛊯"
+  },
+  {
+   "syllable": "gen",
+   "glyph": "𛋻"
+  },
+  {
+   "syllable": "ges",
+   "glyph": "𛋶"
+  },
+  {
+   "syllable": "gin",
+   "glyph": "𛋫"
+  },
+  {
+   "syllable": "gis",
+   "glyph": "𛋌"
+  },
+  {
+   "syllable": "gon",
+   "glyph": "𛊧"
+  },
+  {
+   "syllable": "gos",
+   "glyph": "𛋥"
+  },
+  {
+   "syllable": "gun",
+   "glyph": "𛋁"
+  },
+  {
+   "syllable": "gus",
+   "glyph": "𛋄"
+  },
+  {
+   "syllable": "nan",
+   "glyph": "𛊊"
+  },
+  {
+   "syllable": "nas",
+   "glyph": "𛊳"
+  },
+  {
+   "syllable": "nen",
+   "glyph": "𛊔"
+  },
+  {
+   "syllable": "nes",
+   "glyph": "𛉔"
+  },
+  {
+   "syllable": "nin",
+   "glyph": "𛉫"
+  },
+  {
+   "syllable": "nis",
+   "glyph": "𛉨"
+  },
+  {
+   "syllable": "non",
+   "glyph": "𛉂"
+  },
+  {
+   "syllable": "nos",
+   "glyph": "𛊴"
+  },
+  {
+   "syllable": "nun",
+   "glyph": "𛋟"
+  },
+  {
+   "syllable": "nus",
+   "glyph": "𛊹"
+  },
+  {
+   "syllable": "ran",
+   "glyph": "𛉈"
+  },
+  {
+   "syllable": "ras",
+   "glyph": "𛊇"
+  },
+  {
+   "syllable": "ren",
+   "glyph": "𛉲"
+  },
+  {
+   "syllable": "res",
+   "glyph": "𛉷"
+  },
+  {
+   "syllable": "rin",
+   "glyph": "𛉩"
+  },
+  {
+   "syllable": "ris",
+   "glyph": "𛉤"
+  },
+  {
+   "syllable": "ron",
+   "glyph": "𛉺"
+  },
+  {
+   "syllable": "ros",
+   "glyph": "𛊆"
+  },
+  {
+   "syllable": "run",
+   "glyph": "𛋨"
+  },
+  {
+   "syllable": "rus",
+   "glyph": "𛋞"
+  },
+  {
+   "syllable": "tan",
+   "glyph": "𛉯"
+  },
+  {
+   "syllable": "tas",
+   "glyph": "𛊬"
+  },
+  {
+   "syllable": "ten",
+   "glyph": "𛉌"
+  },
+  {
+   "syllable": "tes",
+   "glyph": "𛉱"
+  },
+  {
+   "syllable": "tin",
+   "glyph": "𛉊"
+  },
+  {
+   "syllable": "tis",
+   "glyph": "𛉢"
+  },
+  {
+   "syllable": "ton",
+   "glyph": "𛉟"
+  },
+  {
+   "syllable": "tos",
+   "glyph": "𛊥"
+  },
+  {
+   "syllable": "tun",
+   "glyph": "𛋩"
+  },
+  {
+   "syllable": "tus",
+   "glyph": "𛋺"
+  }
+ ],
+ "word_chars": [
+  {
+   "word": "la",
+   "glyph": "𛅰",
+   "cp": "U+1B170"
+  },
+  {
+   "word": "e",
+   "glyph": "𛅱",
+   "cp": "U+1B171"
+  },
+  {
+   "word": "es",
+   "glyph": "𛅳",
+   "cp": "U+1B173"
+  },
+  {
+   "word": "en",
+   "glyph": "𛅴",
+   "cp": "U+1B174"
+  },
+  {
+   "word": "de",
+   "glyph": "𛅶",
+   "cp": "U+1B176"
+  },
+  {
+   "word": "ta",
+   "glyph": "𛈍",
+   "cp": "U+1B20D"
+  },
+  {
+   "word": "un",
+   "glyph": "𛅷",
+   "cp": "U+1B177"
+  },
+  {
+   "word": "an",
+   "glyph": "𛇱",
+   "cp": "U+1B1F1"
+  },
+  {
+   "word": "ca",
+   "glyph": "𛆥",
+   "cp": "U+1B1A5"
+  },
+  {
+   "word": "i",
+   "glyph": "𛆭",
+   "cp": "U+1B1AD"
+  },
+  {
+   "word": "no",
+   "glyph": "𛆊",
+   "cp": "U+1B18A"
+  },
+  {
+   "word": "me",
+   "glyph": "𛆃",
+   "cp": "U+1B183"
+  },
+  {
+   "word": "bon",
+   "glyph": "𛆰",
+   "cp": "U+1B1B0"
+  },
+  {
+   "word": "como",
+   "glyph": "𛆈",
+   "cp": "U+1B188"
+  },
+  {
+   "word": "nos",
+   "glyph": "𛆲",
+   "cp": "U+1B1B2"
+  },
+  {
+   "word": "tu",
+   "glyph": "𛆎",
+   "cp": "U+1B18E"
+  },
+  {
+   "word": "par",
+   "glyph": "𛅲",
+   "cp": "U+1B172"
+  },
+  {
+   "word": "per",
+   "glyph": "𛅵",
+   "cp": "U+1B175"
+  }
+ ],
+ "examples": [
+  {
+   "word": "gato",
+   "syllables": [
+    "ga",
+    "to"
+   ],
+   "glyphs": "𛈚𛇚",
+   "per": [
+    {
+     "syllable": "ga",
+     "glyph": "𛈚"
+    },
+    {
+     "syllable": "to",
+     "glyph": "𛇚"
+    }
+   ]
+  },
+  {
+   "word": "blanca",
+   "syllables": [
+    "ba",
+    "lan",
+    "ca"
+   ],
+   "glyphs": "𛇜𛉝𛈊",
+   "per": [
+    {
+     "syllable": "ba",
+     "glyph": "𛇜"
+    },
+    {
+     "syllable": "lan",
+     "glyph": "𛉝"
+    },
+    {
+     "syllable": "ca",
+     "glyph": "𛈊"
+    }
+   ]
+  },
+  {
+   "word": "pex",
+   "syllables": [
+    "pe",
+    "xa"
+   ],
+   "glyphs": "𛈱𛈯",
+   "per": [
+    {
+     "syllable": "pe",
+     "glyph": "𛈱"
+    },
+    {
+     "syllable": "xa",
+     "glyph": "𛈯"
+    }
+   ]
+  },
+  {
+   "word": "nosa",
+   "syllables": [
+    "no",
+    "sa"
+   ],
+   "glyphs": "𛈘𛊀",
+   "per": [
+    {
+     "syllable": "no",
+     "glyph": "𛈘"
+    },
+    {
+     "syllable": "sa",
+     "glyph": "𛊀"
+    }
+   ]
+  },
+  {
+   "word": "auto",
+   "syllables": [
+    "a",
+    "u",
+    "to"
+   ],
+   "glyphs": "𛇤𛈾𛇚",
+   "per": [
+    {
+     "syllable": "a",
+     "glyph": "𛇤"
+    },
+    {
+     "syllable": "u",
+     "glyph": "𛈾"
+    },
+    {
+     "syllable": "to",
+     "glyph": "𛇚"
+    }
+   ]
+  },
+  {
+   "word": "aprende",
+   "syllables": [
+    "a",
+    "pa",
+    "ren",
+    "de"
+   ],
+   "glyphs": "𛇤𛊂𛉲𛈞",
+   "per": [
+    {
+     "syllable": "a",
+     "glyph": "𛇤"
+    },
+    {
+     "syllable": "pa",
+     "glyph": "𛊂"
+    },
+    {
+     "syllable": "ren",
+     "glyph": "𛉲"
+    },
+    {
+     "syllable": "de",
+     "glyph": "𛈞"
+    }
+   ]
+  }
+ ],
+ "glyph_count": {
+  "syllable_chars": 247,
+  "word_chars": 149
+ }
+}
