@@ -6,7 +6,6 @@
 	import CardDescription from "$lib/components/ui/card/CardDescription.svelte";
 	import CardContent from "$lib/components/ui/card/CardContent.svelte";
 	import Badge from "$lib/components/ui/badge/Badge.svelte";
-	import ScrollArea from "$lib/components/ui/scroll-area/ScrollArea.svelte";
 	import {
 		Search as SearchIcon,
 		Loader2,
@@ -14,7 +13,7 @@
 		Languages
 	} from "lucide-svelte";
 
-	type Sense = { p: string; d: string; e: string; n: string; t?: [string, string] };
+	type Sense = { pos: string; def: string; pron: string; ex: string; t?: [string, string] };
 	type Dict = Record<string, Sense[]>;
 	type Trans = [string, string, string][];
 
@@ -87,7 +86,7 @@
 			.filter((k) => !starts.includes(k) && norm(k).includes(q))
 			.slice(0, 10);
 		let viaTrans: string[] = [];
-		if (transLoaded && starts.length < 20) {
+		if (transLoaded) {
 			const seen = new Set([...starts, ...contains]);
 			for (const [w, e, z] of trans) {
 				if (seen.has(w)) continue;
@@ -98,7 +97,7 @@
 				}
 			}
 		}
-		results = [...starts, ...contains, ...viaTrans].slice(0, 30);
+		results = [...starts.slice(0, 10), ...contains.slice(0, 5), ...viaTrans.slice(0, 15)].slice(0, 30);
 		noResults = results.length === 0;
 	}
 
@@ -151,11 +150,11 @@
 		</div>
 	{:else if noResults}
 		<p class="py-16 text-center text-sm text-muted-foreground">
-			No resulta per "{$query}" — 无结果
+			No resulta per "{query}" — 无结果
 		</p>
 	{:else}
 		<div class="flex flex-col gap-4 lg:flex-row">
-			<ScrollArea class="h-72 w-full rounded-md border lg:h-[520px] lg:w-80 lg:shrink-0">
+			<div class="h-72 w-full overflow-y-auto rounded-md border lg:h-[520px] lg:w-80 lg:shrink-0">
 				<ul class="p-1">
 					{#each results as w (w)}
 						<li>
@@ -168,15 +167,15 @@
 								<span class="truncate text-xs text-muted-foreground">
 									{#if dict[w]?.[0]?.t?.[0]}
 										{dict[w][0].t[0]}
-									{:else if dict[w]?.[0]?.p}
-										{POS_LABEL[dict[w][0].p] ?? dict[w][0].p}
+									{:else if dict[w]?.[0]?.pos}
+										{POS_LABEL[dict[w][0].pos] ?? dict[w][0].p}
 									{/if}
 								</span>
 							</button>
 						</li>
 					{/each}
 				</ul>
-			</ScrollArea>
+			</div>
 
 			<div class="flex-1">
 				{#if selected && dict[selected]}
@@ -185,13 +184,13 @@
 							<div class="flex flex-wrap items-center gap-2">
 								<CardTitle class="text-2xl">{selected}</CardTitle>
 								{#each dict[selected] as s, i (i)}
-									{#if s.p}
-										<Badge variant="outline">{POS_LABEL[s.p] ?? s.p}</Badge>
+									{#if s.pos}
+										<Badge variant="outline">{POS_LABEL[s.pos] ?? s.pos}</Badge>
 									{/if}
 								{/each}
 							</div>
-							{#if dict[selected][0]?.n}
-								<CardDescription>Pronunsia: {dict[selected][0].n}</CardDescription>
+							{#if dict[selected][0]?.pron}
+								<CardDescription>Pronunsia: {dict[selected][0].pron}</CardDescription>
 							{/if}
 						</CardHeader>
 						<CardContent class="space-y-4">
@@ -217,17 +216,17 @@
 							{/if}
 							{#each dict[selected] as s, i (i)}
 								<div class="space-y-1.5">
-									{#if s.p}
+									{#if s.pos}
 										<p class="text-xs font-medium text-muted-foreground uppercase">
-											{POS_LABEL[s.p] ?? s.p}
-											{#if s.n}· /{s.n}/{/if}
+											{POS_LABEL[s.pos] ?? s.pos}
+											{#if s.pron}· /{s.pron}/{/if}
 										</p>
 									{/if}
-									{#if s.d}
-										<p class="text-sm leading-relaxed">{s.d}</p>
+									{#if s.def}
+										<p class="text-sm leading-relaxed">{s.def}</p>
 									{/if}
-									{#if s.e}
-										<p class="text-sm italic text-muted-foreground">{s.e}</p>
+									{#if s.ex}
+										<p class="text-sm italic text-muted-foreground">{s.ex}</p>
 									{/if}
 								</div>
 							{/each}
