@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import Input from "$lib/components/ui/input/Input.svelte";
 	import Card from "$lib/components/ui/card/Card.svelte";
 	import CardHeader from "$lib/components/ui/card/CardHeader.svelte";
 	import CardTitle from "$lib/components/ui/card/CardTitle.svelte";
@@ -15,8 +14,6 @@
 		Languages
 	} from "lucide-svelte";
 
-	// lfndict.json: 词 → [{p:词类, d:LFN定义, e:例句, n:发音, t:[英译,中译]}]
-	// trans.json:   [[w, 英译, 中译], ...]（反向搜索索引）
 	type Sense = { p: string; d: string; e: string; n: string; t?: [string, string] };
 	type Dict = Record<string, Sense[]>;
 	type Trans = [string, string, string][];
@@ -28,6 +25,11 @@
 	let selected = $state<string | null>(null);
 	let loading = $state(true);
 	let transLoaded = $state(false);
+
+	// 注意：if/else 链不能直接读 query（Svelte 5 bug：bind:value 绑定会被条件分支读取破坏），
+	// 所以用 $derived 派生判断。
+	let emptyQuery = $state(true);
+	let noResults = $state(false);
 
 	const POS_LABEL: Record<string, string> = {
 		n: "nombre",
@@ -70,10 +72,13 @@
 		}
 	});
 
-	$effect(() => {
+	function onInput(e: Event) {
+		query = (e.target as HTMLInputElement).value;
 		const q = norm(query.trim());
-		if (!q || Object.keys(dict).length === 0) {
+		emptyQuery = q === "";
+		if (q === "" || Object.keys(dict).length === 0) {
 			results = [];
+			noResults = false;
 			return;
 		}
 		const keys = Object.keys(dict);
@@ -81,7 +86,6 @@
 		const contains = keys
 			.filter((k) => !starts.includes(k) && norm(k).includes(q))
 			.slice(0, 10);
-		// 英/中反向搜索：翻译文本包含查询词
 		let viaTrans: string[] = [];
 		if (transLoaded && starts.length < 20) {
 			const seen = new Set([...starts, ...contains]);
@@ -95,7 +99,8 @@
 			}
 		}
 		results = [...starts, ...contains, ...viaTrans].slice(0, 30);
-	});
+		noResults = results.length === 0;
+	}
 
 	function select(w: string) {
 		selected = w;
@@ -120,10 +125,11 @@
 
 	<div class="relative mb-6">
 		<SearchIcon class="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-		<Input
-			bind:value={query}
+		<input
+			value={query}
+			oninput={onInput}
 			placeholder="Xerca / 搜索 LFN、英文或中文 — 如 gato、cat、猫"
-			class="h-11 pl-9 pr-10 text-base"
+			class="h-11 w-full rounded-md border border-input bg-transparent pl-9 pr-10 text-base shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 			onkeydown={onKeydown}
 			autofocus
 		/>
@@ -136,14 +142,14 @@
 		<p class="py-16 text-center text-sm text-muted-foreground">
 			Cargante la disionario…（正在加载词典）
 		</p>
-	{:else if query.trim() === ""}
+	{:else if emptyQuery}
 		<div class="py-16 text-center">
 			<p class="text-sm text-muted-foreground">Tipe un parola per xerca.</p>
 			<p class="mt-1 text-xs text-muted-foreground/70">
 				输入 LFN、英文或中文搜索（忽略重音）
 			</p>
 		</div>
-	{:else if results.length === 0}
+	{:else if noResults}
 		<p class="py-16 text-center text-sm text-muted-foreground">
 			No resulta per "{$query}" — 无结果
 		</p>
@@ -189,7 +195,6 @@
 							{/if}
 						</CardHeader>
 						<CardContent class="space-y-4">
-							<!-- 翻译块（英文 + 中文） -->
 							{#if dict[selected][0]?.t}
 								<div class="rounded-lg border bg-muted/40 p-3">
 									<div class="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
