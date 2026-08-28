@@ -55,9 +55,12 @@
 
 	onMount(async () => {
 		try {
+			const base = import.meta.env.BASE_URL.endsWith("/")
+				? import.meta.env.BASE_URL
+				: import.meta.env.BASE_URL + "/";
 			const [d, t] = await Promise.all([
-				fetch(import.meta.env.BASE_URL + "data/lfndict.json").then((r) => r.json()),
-				fetch(import.meta.env.BASE_URL + "data/trans.json").then((r) => r.json())
+				fetch(base + "data/lfndict.json").then((r) => r.json()),
+				fetch(base + "data/trans.json").then((r) => r.json())
 			]);
 			dict = d;
 			trans = t;
