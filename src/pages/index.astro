@@ -28,7 +28,12 @@ import "../styles/global.css";
 	<body class="bg-background text-foreground antialiased">
 		<main>
 			<p class="pt-4 text-center text-sm">
-				<a href={import.meta.env.BASE_URL + "aprende"} class="font-medium text-primary hover:underline">
+				<a
+					href={import.meta.env.BASE_URL.endsWith("/")
+						? import.meta.env.BASE_URL + "aprende"
+						: import.meta.env.BASE_URL + "/aprende"}
+					class="font-medium text-primary hover:underline"
+				>
 					学习映射：Latin LFN → 女书（NSLFN 指南）→
 				</a>
 			</p>
